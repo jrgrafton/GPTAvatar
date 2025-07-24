@@ -586,6 +586,10 @@
       <HintPath>Library\PackageCache\com.unity.visualscripting@1.8.0\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SALSA-LipSync">
+      <HintPath>Assets\Plugins\Crazy Minnow Studio\SALSA LipSync\Plugins\SALSA-LipSync.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Plastic.Antlr3.Runtime">
       <HintPath>Library\PackageCache\com.unity.collab-proxy@2.0.1\Lib\Editor\PlasticSCM\Unity.Plastic.Antlr3.Runtime.dll</HintPath>
       <Private>False</Private>
@@ -610,6 +614,10 @@
       <HintPath>Library\PackageCache\com.unity.visualscripting@1.8.0\Runtime\VisualScripting.Flow\Dependencies\NCalc\Unity.VisualScripting.Antlr3.Runtime.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SALSA-LipSync-Editor">
+      <HintPath>Assets\Plugins\Crazy Minnow Studio\SALSA LipSync\Editor\SALSA-LipSync-Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="DOTweenEditor">
       <HintPath>Assets\RT\Other\DOTween\Editor\DOTweenEditor.dll</HintPath>
       <Private>False</Private>
@@ -620,14 +628,6 @@
     </Reference>
     <Reference Include="unityplastic">
       <HintPath>Library\PackageCache\com.unity.collab-proxy@2.0.1\Lib\Editor\PlasticSCM\unityplastic.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="SALSA-LipSync">
-      <HintPath>Assets\Plugins\Crazy Minnow Studio\SALSA LipSync\Plugins\SALSA-LipSync.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="SALSA-LipSync-Editor">
-      <HintPath>Assets\Plugins\Crazy Minnow Studio\SALSA LipSync\Editor\SALSA-LipSync-Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="nunit.framework">

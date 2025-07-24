@@ -94,8 +94,8 @@
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Data\Nodes\Input\CustomInterpolatorNode.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Data\Nodes\Math\Trigonometry\DegreesToRadiansNode.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Drawing\Blackboard\BlackboardUtils.cs" />
-    <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Generation\Enumerations\KeywordShaderStage.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\AssetCallbacks\CreateVFXShaderGraph.cs" />
+    <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Generation\Enumerations\KeywordShaderStage.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Data\Nodes\Math\Vector\ProjectionNode.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Data\Nodes\Input\Basic\BooleanNode.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Generation\Targets\Fullscreen\Includes\FullscreenShaderPass.cs" />
@@ -503,8 +503,8 @@
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Data\Nodes\Math\Matrix\MatrixSplitNode.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Data\Graphs\TextureSamplerState.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Data\Graphs\GraphValidation.cs" />
-    <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Generation\Collections\IncludeCollection.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Data\Nodes\Math\Advanced\ExponentialNode.cs" />
+    <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Generation\Collections\IncludeCollection.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Data\Nodes\Input\Geometry\ViewVectorNode.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Data\Nodes\Input\Texture\SamplerStateNode.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Data\Nodes\Procedural\Noise\VoronoiNode.cs" />
@@ -685,8 +685,8 @@
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Data\Nodes\Channel\SplitNode.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Generation\Enumerations\Platform.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Importers\ShaderGraphImporterEditor.cs" />
-    <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Data\Graphs\MaterialSlot.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Generation\Descriptors\AdditionalCommandDescriptor.cs" />
+    <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Data\Graphs\MaterialSlot.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Generation\Targets\BuiltIn\Editor\AssetPostProcessors\ShaderGraphMaterialsUpdater.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Drawing\Views\Slots\LabelSlotControlView.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Data\Nodes\Math\Trigonometry\HyperbolicTangentNode.cs" />
@@ -726,8 +726,8 @@
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Data\Nodes\Input\Texture\TextureStackNode.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Generation\Processors\MatrixNames.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Data\Nodes\Math\Trigonometry\CosineNode.cs" />
-    <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Data\Nodes\Math\Basic\SquareRootNode.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Drawing\Blackboard\SGBlackboardField.cs" />
+    <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Data\Nodes\Math\Basic\SquareRootNode.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Drawing\Controls\IControlAttribute.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Generation\Attributes\GenerateBlocksAttribute.cs" />
     <Compile Include="Library\PackageCache\com.unity.shadergraph@14.0.6\Editor\Drawing\Inspector\PropertyDrawers\Vector2PropertyDrawer.cs" />
@@ -1217,6 +1217,10 @@
       <HintPath>Library\PackageCache\com.unity.visualscripting@1.8.0\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SALSA-LipSync">
+      <HintPath>Assets\Plugins\Crazy Minnow Studio\SALSA LipSync\Plugins\SALSA-LipSync.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Plastic.Antlr3.Runtime">
       <HintPath>Library\PackageCache\com.unity.collab-proxy@2.0.1\Lib\Editor\PlasticSCM\Unity.Plastic.Antlr3.Runtime.dll</HintPath>
       <Private>False</Private>
@@ -1241,6 +1245,10 @@
       <HintPath>Library\PackageCache\com.unity.visualscripting@1.8.0\Runtime\VisualScripting.Flow\Dependencies\NCalc\Unity.VisualScripting.Antlr3.Runtime.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SALSA-LipSync-Editor">
+      <HintPath>Assets\Plugins\Crazy Minnow Studio\SALSA LipSync\Editor\SALSA-LipSync-Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="DOTweenEditor">
       <HintPath>Assets\RT\Other\DOTween\Editor\DOTweenEditor.dll</HintPath>
       <Private>False</Private>
@@ -1251,14 +1259,6 @@
     </Reference>
     <Reference Include="unityplastic">
       <HintPath>Library\PackageCache\com.unity.collab-proxy@2.0.1\Lib\Editor\PlasticSCM\unityplastic.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="SALSA-LipSync">
-      <HintPath>Assets\Plugins\Crazy Minnow Studio\SALSA LipSync\Plugins\SALSA-LipSync.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="SALSA-LipSync-Editor">
-      <HintPath>Assets\Plugins\Crazy Minnow Studio\SALSA LipSync\Editor\SALSA-LipSync-Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="nunit.framework">
