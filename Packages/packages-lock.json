@@ -1,12 +1,22 @@
 {
   "dependencies": {
-    "com.soupday.cc3_unity_tools": {
-      "version": "file:F:/Unity/Mypackages/cc_unity_tools_URP-1.4.7.URP12",
+    "com.boxqkrtm.ide.cursor": {
+      "version": "https://github.com/boxqkrtm/com.unity.ide.cursor.git",
       "depth": 0,
-      "source": "local",
+      "source": "git",
+      "dependencies": {
+        "com.unity.test-framework": "1.1.9"
+      },
+      "hash": "38fecf55e4fd94ccfe58a92ed8ad1a529ba1694e"
+    },
+    "com.soupday.cc3_unity_tools": {
+      "version": "https://github.com/soupday/cc_unity_tools_URP.git#1.4.7.URP12",
+      "depth": 0,
+      "source": "git",
       "dependencies": {
         "com.unity.render-pipelines.universal": "12.0.0"
-      }
+      },
+      "hash": "6f82dcf6c2c93edfb497eb67c7020ba5b3076f73"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
@@ -92,9 +102,9 @@
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.settings-manager": "1.0.3",
+        "com.unity.modules.imgui": "1.0.0",
         "com.unity.modules.physics": "1.0.0",
-        "com.unity.modules.imgui": "1.0.0"
+        "com.unity.settings-manager": "1.0.3"
       },
       "url": "https://packages.unity.com"
     },
@@ -168,9 +178,9 @@
       "depth": 0,
       "source": "registry",
       "dependencies": {
+        "com.unity.modules.audio": "1.0.0",
         "com.unity.modules.director": "1.0.0",
         "com.unity.modules.animation": "1.0.0",
-        "com.unity.modules.audio": "1.0.0",
         "com.unity.modules.particlesystem": "1.0.0"
       },
       "url": "https://packages.unity.com"
