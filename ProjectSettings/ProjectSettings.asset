@@ -165,7 +165,7 @@ PlayerSettings:
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 22
   AndroidTargetSdkVersion: 0
-  AndroidPreferredInstallLocation: 1
+  AndroidPreferredInstallLocation: 0
   aotOptions: 
   stripEngineCode: 1
   iPhoneStrippingLevel: 0
@@ -511,6 +511,9 @@ PlayerSettings:
   - m_BuildTarget: AndroidPlayer
     m_APIs: 150000000b000000
     m_Automatic: 0
+  - m_BuildTarget: WindowsStandaloneSupport
+    m_APIs: 02000000
+    m_Automatic: 0
   m_BuildTargetVRSettings: []
   m_DefaultShaderChunkSizeInMB: 16
   m_DefaultShaderChunkCount: 0
@@ -796,7 +799,8 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Standalone: CROSS_PLATFORM_INPUT;CMS_SALSA
+    Android: ISDK_OPENXR_HAND
+    Standalone: CROSS_PLATFORM_INPUT;CMS_SALSA;ISDK_OPENXR_HAND
     iPhone: CROSS_PLATFORM_INPUT;MOBILE_INPUT;CMS_SALSA
   additionalCompilerArguments: {}
   platformArchitecture: {}
@@ -817,7 +821,7 @@ PlayerSettings:
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: MyFriendURP
-  metroPackageVersion: 
+  metroPackageVersion: 1.0.0.0
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
@@ -825,7 +829,7 @@ PlayerSettings:
   metroCertificateNotAfter: 0000000000000000
   metroApplicationDescription: MyFriendURP
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: GPTAvatar
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0
