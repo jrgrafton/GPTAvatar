@@ -71,11 +71,11 @@ public class QuestUI : MonoBehaviour
         // Update button visual state
         UpdateButtonVisuals();
 
-        // TODO Phase 3: Connect to existing AIManager functionality
+        // Connect to existing AIManager functionality
         if (aiManager != null)
         {
-            Debug.Log($"[QuestUI] Would call aiManager.ToggleRecording() here (new state: {(isRecording ? "Recording" : "Stopped")})");
-            // aiManager.ToggleRecording();
+            Debug.Log($"[QuestUI] Calling aiManager.ToggleRecording()");
+            aiManager.ToggleRecording();
         }
         else
         {

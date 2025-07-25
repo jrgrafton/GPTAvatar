@@ -57,7 +57,7 @@ public class AIManager : MonoBehaviour
             return;
         }
 
-        _dialogText.text = "Click Start for the character to introduce themselves.";
+        _dialogText.text = "Press record, start talking, then press stop.";
         _statusText.text = "";
 
         ForgetStuff();

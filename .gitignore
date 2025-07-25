@@ -21,7 +21,6 @@ textgen_json_received.json
 tts_json_received.json
 tts_json_sent.json
 tts_last_error_returned.json
-config.txt
 GPTAvatar_Windows.zip
 GPTAvatar.sln
 .vsconfig
