@@ -12,8 +12,11 @@ public class QuestUI : MonoBehaviour
     public AIManager aiManager;
     
     [Header("Button UI References")]
-    [Tooltip("Drag the PokeButton prefab/GameObject here")]
-    public GameObject pokeButton;
+    [Tooltip("Drag the Record PokeButton prefab/GameObject here")]
+    public GameObject recordButton;
+    
+    [Tooltip("Drag the Next Friend PokeButton prefab/GameObject here")]
+    public GameObject nextFriendButton;
     
     [Header("Button States")]
     [Tooltip("Text to show when ready to record")]
@@ -75,7 +78,7 @@ public class QuestUI : MonoBehaviour
         if (aiManager != null)
         {
             Debug.Log($"[QuestUI] Calling aiManager.ToggleRecording()");
-            aiManager.ToggleRecording();
+            //aiManager.ToggleRecording();
         }
         else
         {
@@ -84,15 +87,41 @@ public class QuestUI : MonoBehaviour
     }
 
     /// <summary>
+    /// Called when the next friend button is pressed via VR poke interaction
+    /// </summary>
+    /// <param name="sender">The GameObject that triggered the interaction (usually the button)</param>
+    public void NextFriendButtonPressed(GameObject sender)
+    {
+        if (enableDebugLogging)
+        {
+            Debug.Log($"[QuestUI] Next Friend button pressed!");
+            Debug.Log($"  - Sender: {sender?.name ?? "null"}");
+            Debug.Log($"  - Time: {Time.time:F2}s");
+            Debug.Log($"  - AIManager connected: {aiManager != null}");
+        }
+
+        // Call AIManager's OnNextFriend method
+        if (aiManager != null)
+        {
+            Debug.Log($"[QuestUI] Calling aiManager.OnNextFriend()");
+            aiManager.OnNextFriend();
+        }
+        else
+        {
+            Debug.LogWarning("[QuestUI] Cannot switch to next friend - AIManager is null!");
+        }
+    }
+
+    /// <summary>
     /// Updates the button text and color based on current recording state
     /// </summary>
     private void UpdateButtonVisuals()
     {
-        if (pokeButton == null)
+        if (recordButton == null)
         {
             if (enableDebugLogging)
             {
-                Debug.LogWarning("[QuestUI] pokeButton is null - please assign the PokeButton GameObject in inspector!");
+                Debug.LogWarning("[QuestUI] recordButton is null - please assign the Record PokeButton GameObject in inspector!");
             }
             return;
         }
@@ -106,9 +135,9 @@ public class QuestUI : MonoBehaviour
         // Find and update text component
         if (enableDebugLogging)
         {
-            Debug.Log($"[QuestUI] Searching for TextMeshPro components in {pokeButton.name} children...");
-            var allTMPsUI = pokeButton.GetComponentsInChildren<TextMeshProUGUI>();
-            var allTMPs3D = pokeButton.GetComponentsInChildren<TMPro.TextMeshPro>();
+            Debug.Log($"[QuestUI] Searching for TextMeshPro components in {recordButton.name} children...");
+            var allTMPsUI = recordButton.GetComponentsInChildren<TextMeshProUGUI>();
+            var allTMPs3D = recordButton.GetComponentsInChildren<TMPro.TextMeshPro>();
             Debug.Log($"[QuestUI] Found {allTMPsUI.Length} TextMeshProUGUI (UI) components");
             Debug.Log($"[QuestUI] Found {allTMPs3D.Length} TextMeshPro (3D) components:");
             for (int i = 0; i < allTMPs3D.Length; i++)
@@ -118,8 +147,8 @@ public class QuestUI : MonoBehaviour
         }
 
         // Try TextMeshProUGUI first (UI), then TextMeshPro (3D)
-        var buttonTextUI = pokeButton.GetComponentInChildren<TextMeshProUGUI>();
-        var buttonText3D = pokeButton.GetComponentInChildren<TMPro.TextMeshPro>();
+        var buttonTextUI = recordButton.GetComponentInChildren<TextMeshProUGUI>();
+        var buttonText3D = recordButton.GetComponentInChildren<TMPro.TextMeshPro>();
         
         if (buttonTextUI != null)
         {
@@ -191,8 +220,8 @@ public class QuestUI : MonoBehaviour
     private MonoBehaviour FindInteractableColorVisual()
     {
         // Check both the PokeButton itself AND its children
-        var allComponents = pokeButton.GetComponentsInChildren<MonoBehaviour>(true); // Include inactive
-        var buttonComponents = pokeButton.GetComponents<MonoBehaviour>(); // Check button itself too
+        var allComponents = recordButton.GetComponentsInChildren<MonoBehaviour>(true); // Include inactive
+        var buttonComponents = recordButton.GetComponents<MonoBehaviour>(); // Check button itself too
         
         // Combine both arrays
         var combinedComponents = new MonoBehaviour[allComponents.Length + buttonComponents.Length];
