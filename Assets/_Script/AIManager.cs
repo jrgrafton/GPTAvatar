@@ -302,7 +302,7 @@ public class AIManager : MonoBehaviour
             json = ttsScript.BuildTTSJSON(text, _activeFriend._elevenlabsStability);
             ttsScript.SpawnTTSRequest(json, OnTTSCompletedCallbackElevenLabs, db, _elevenLabsAPIkey, _activeFriend._elevelLabsVoice);
 
-            UpdateStatusText("Clearing throat...", 20);
+            UpdateStatusText("Composing Voicemail...", 20);
 
         }
         else if (_activeFriend._googleVoice.Length > 1 && _googleAPIkey.Length > 1)
@@ -312,7 +312,7 @@ public class AIManager : MonoBehaviour
             GoogleTextToSpeechManager ttsScript = gameObject.GetComponent<GoogleTextToSpeechManager>();
             json = ttsScript.BuildTTSJSON(text, countryCode, _activeFriend._googleVoice, sampleRate, _activeFriend._pitch, _activeFriend._speed);
             ttsScript.SpawnTTSRequest(json, OnTTSCompletedCallback, db, _googleAPIkey);
-            UpdateStatusText("Clearing throat...", 20);
+            UpdateStatusText("Composing Voicemail...", 20);
         } else
         {
             //No text to speech setup for this voice
@@ -435,7 +435,7 @@ public class AIManager : MonoBehaviour
             stepTime = Time.realtimeSinceStartup;
             //PlayClickSound();
             RTMessageManager.Get().Schedule(0, RTAudioManager.Get().PlayEx, 
-"record_start_short", 0.4f, 1.0f, false, 0.0f);
+"record_start_short", 0.3f, 1.0f, false, 0.0f);
 
             Debug.Log($"[PERF] PlayClickSound took: {(Time.realtimeSinceStartup - stepTime) * 1000:F1}ms");
             
@@ -487,7 +487,7 @@ public class AIManager : MonoBehaviour
     {
         ForgetStuff();
         //build a stack of GTPChatLine so we can add as many as we want
-        PlayClickSound();
+        //PlayClickSound();
 
         OpenAITextCompletionManager textCompletionScript = gameObject.GetComponent<OpenAITextCompletionManager>();
         Queue<GTPChatLine> lines = new Queue<GTPChatLine>();
