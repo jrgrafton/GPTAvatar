@@ -415,14 +415,31 @@ public class AIManager : MonoBehaviour
     {
         if (!_microPhoneScript.IsRecording())
         {
+            float startTime = Time.realtimeSinceStartup;
+            Debug.Log("[PERF] ToggleRecording START - Starting recording operations");
+            
             StopTalking();
+            Debug.Log($"[PERF] StopTalking took: {(Time.realtimeSinceStartup - startTime) * 1000:F1}ms");
+            
+            float stepTime = Time.realtimeSinceStartup;
             Debug.Log("Recording started");
             //make the button background turn red
             _recordButton.GetComponent<Image>().color = Color.red;
+            Debug.Log($"[PERF] GetComponent<Image>().color took: {(Time.realtimeSinceStartup - stepTime) * 1000:F1}ms");
+            
+            stepTime = Time.realtimeSinceStartup;
             _microPhoneScript.StartRecording();
+            Debug.Log($"[PERF] StartRecording took: {(Time.realtimeSinceStartup - stepTime) * 1000:F1}ms");
+            
+            stepTime = Time.realtimeSinceStartup;
             PlayClickSound();
+            Debug.Log($"[PERF] PlayClickSound took: {(Time.realtimeSinceStartup - stepTime) * 1000:F1}ms");
+            
+            stepTime = Time.realtimeSinceStartup;
             SetListening(true);
-
+            Debug.Log($"[PERF] SetListening took: {(Time.realtimeSinceStartup - stepTime) * 1000:F1}ms");
+            
+            Debug.Log($"[PERF] ToggleRecording TOTAL took: {(Time.realtimeSinceStartup - startTime) * 1000:F1}ms");
         }
         else
         {

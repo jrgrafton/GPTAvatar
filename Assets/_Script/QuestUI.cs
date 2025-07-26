@@ -78,7 +78,7 @@ public class QuestUI : MonoBehaviour
         if (aiManager != null)
         {
             Debug.Log($"[QuestUI] Calling aiManager.ToggleRecording()");
-            //aiManager.ToggleRecording();
+            aiManager.ToggleRecording();
         }
         else
         {
