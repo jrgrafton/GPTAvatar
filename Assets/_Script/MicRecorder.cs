@@ -81,7 +81,7 @@ public class MicRecorder : MonoBehaviour
         Debug.Log("[MicRecorder] Initializing continuous microphone buffer - BEGIN");
         
         // Start continuous 30s circular buffer - accept the 1s freeze HERE at startup
-        audioClip = Microphone.Start(null, true, 30, 48000); // loop=true, 30s buffer
+        audioClip = Microphone.Start(null, true, 20, 16000); // loop=true, 30s buffer, 16kHz optimal for speech
         
         Debug.Log($"[MicRecorder] Continuous microphone initialization took: {(Time.realtimeSinceStartup - startTime) * 1000:F1}ms");
         Debug.Log("[MicRecorder] Microphone now running in continuous mode");

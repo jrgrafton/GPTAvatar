@@ -32,12 +32,28 @@ public class QuestUI : MonoBehaviour
     [Tooltip("Enable detailed logging of VR interactions")]
     public bool enableDebugLogging = true;
 
+    // === AUTO-ADVICE PROTOTYPE FEATURE (easily removable) ===
+    [Header("Auto-Advice (Prototype)")]
+    [Tooltip("Automatically trigger advice/greeting after startup")]
+    public bool enableAutoAdvice = true;
+    
+    [Tooltip("Delay in seconds before auto-advice triggers")]
+    public float autoAdviceDelay = 3.0f;
+    
+    private bool autoAdviceTriggered = false;
+    private float startupTime;
+    // === END AUTO-ADVICE FEATURE ===
+
     private bool isRecording = false;
     private Color defaultColor; // Auto-discovered from button
     private bool defaultColorDiscovered = false;
 
     void Start()
     {
+        // === AUTO-ADVICE PROTOTYPE FEATURE ===
+        startupTime = Time.time;
+        // === END AUTO-ADVICE FEATURE ===
+        
         // Auto-find AIManager if not assigned
         if (aiManager == null)
         {
@@ -52,6 +68,28 @@ public class QuestUI : MonoBehaviour
             }
         }
     }
+
+    // === AUTO-ADVICE PROTOTYPE FEATURE ===
+    void Update()
+    {
+        // Check if auto-advice should be triggered
+        if (enableAutoAdvice && !autoAdviceTriggered && aiManager != null)
+        {
+            if (Time.time - startupTime >= autoAdviceDelay)
+            {
+                autoAdviceTriggered = true;
+                
+                if (enableDebugLogging)
+                {
+                    Debug.Log($"[QuestUI] Auto-advice triggered after {autoAdviceDelay}s delay");
+                }
+                
+                // Trigger the AI to give proactive advice/greeting
+                aiManager.OnAdviceButton();
+            }
+        }
+    }
+    // === END AUTO-ADVICE FEATURE ===
 
     /// <summary>
     /// Called when the record button is pressed via VR poke interaction
@@ -105,6 +143,7 @@ public class QuestUI : MonoBehaviour
         {
             Debug.Log($"[QuestUI] Calling aiManager.OnNextFriend()");
             aiManager.OnNextFriend();
+            aiManager.OnAdviceButton();
         }
         else
         {

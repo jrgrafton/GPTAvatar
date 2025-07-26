@@ -19,7 +19,7 @@ public class Friend : ScriptableObject
     public string _visual = "";
     public int _maxTokensToGenerate = 50;
     public float _temperature = 1.3f;
-    public float _elevenlabsStability = 0.7f;
+    public float _elevenlabsStability = 0.5f;
 }
 
 public class Config : MonoBehaviour

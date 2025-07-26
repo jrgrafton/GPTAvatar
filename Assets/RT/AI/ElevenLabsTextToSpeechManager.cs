@@ -53,11 +53,12 @@ public class ElevenLabsTextToSpeechManager : MonoBehaviour
 
     //*  EXAMPLE END */
 
-    public string BuildTTSJSON(string text, float stability = 0.7f, float similarity_boost = 0.7f)
+    public string BuildTTSJSON(string text, float stability = 0.5f, float similarity_boost = 0.8f)
     {
         string json = $@"{{
        
             ""text"": ""{ SimpleJSON.JSONNode.Escape(text)}"",
+            ""model_id"": ""eleven_multilingual_v2"",
        ""voice_settings"": {{
     ""stability"": {stability},
     ""similarity_boost"": {similarity_boost}
