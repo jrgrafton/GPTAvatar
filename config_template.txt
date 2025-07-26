@@ -16,7 +16,7 @@ set_elevenlabs_api_key|<your elevenlabs api key here>
 #Full list of elevenlabs voices: https://beta.elevenlabs.io/speech-synthesis  ( or really, https://api.elevenlabs.io/v1/voices )
 
 #set openAI model to use for AI.  Should be either gpt-3.5-turbo or gpt-4, if you have access to that
-set_openai_model|gpt-3.5-turbo
+set_openai_model|gpt-4o
 
 
 add_friend|Japanese Teacher
@@ -25,8 +25,8 @@ set_friend_token_memory|1000
 set_friend_max_tokens_to_generate|300
 #higher number tempature means more creative and weird
 set_friend_temperature|1.1 
-set_friend_google_voice|ja-JP-Neural2-B
-#set_friend_elevenlabs_voice|MF3mGyEYCl7XYWbV9V6O
+#set_friend_google_voice|ja-JP-Neural2-B
+set_friend_elevenlabs_voice|MF3mGyEYCl7XYWbV9V6O
 set_friend_voice_pitch|0
 set_friend_voice_speed|1.0
 set_friend_visual|japanese_teacher
