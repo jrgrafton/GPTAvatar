@@ -60,8 +60,6 @@ public class AIManager : MonoBehaviour
         _dialogText.text = "Press record, start talking, then press stop.";
         _statusText.text = "";
 
-        ForgetStuff();
-
          List<GameObject> objs = new List<GameObject> ();
         RTUtil.AddObjectsToListByNameIncludingInactive(_visuals, "char_visual", true, objs);
 
@@ -91,6 +89,9 @@ public class AIManager : MonoBehaviour
         _animator = activeVisual.GetComponentInChildren<Animator>();
 #endif
         SetListening(false);
+        
+        // Clear chat history and stop any cached audio AFTER AudioSource is properly assigned
+        ForgetStuff();
        
     }
 
