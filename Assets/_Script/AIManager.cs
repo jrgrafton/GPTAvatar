@@ -432,7 +432,10 @@ public class AIManager : MonoBehaviour
             Debug.Log($"[PERF] StartRecording took: {(Time.realtimeSinceStartup - stepTime) * 1000:F1}ms");
             
             stepTime = Time.realtimeSinceStartup;
-            PlayClickSound();
+            //PlayClickSound();
+            RTMessageManager.Get().Schedule(0, RTAudioManager.Get().PlayEx, 
+"record_start_short", 0.4f, 1.0f, false, 0.0f);
+
             Debug.Log($"[PERF] PlayClickSound took: {(Time.realtimeSinceStartup - stepTime) * 1000:F1}ms");
             
             stepTime = Time.realtimeSinceStartup;
@@ -445,7 +448,12 @@ public class AIManager : MonoBehaviour
         {
             //Turn the button background color back
             _recordButton.GetComponent<Image>().color = Color.white;
-            PlayClickSound();
+            //PlayClickSound();
+
+            // Uses RTMessageManager for scheduled playback
+            RTMessageManager.Get().Schedule(0, RTAudioManager.Get().PlayEx, 
+"record_stop", 0.1f, 1.0f, false, 0.0f);
+
             //let's set the filename to a temporary space that will work on iOS
             string outputFileName = Application.temporaryCachePath + "/temp.wav";
             _microPhoneScript.StopRecordingAndProcess(outputFileName);
@@ -511,6 +519,7 @@ public class AIManager : MonoBehaviour
     {
         AudioSource audioSource = _audioSourceToUse;
         audioSource.Stop();
+        audioSource.clip = null;  // Clear cached audio clip to prevent replay
         SetTalking(false);
 
     }
