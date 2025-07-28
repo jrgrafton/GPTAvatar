@@ -356,7 +356,7 @@ public class AIManager : MonoBehaviour
             audioSource.clip = clip;
             
             // Add answering machine quality effects
-            //AddAnsweringMachineEffects(audioSource);
+            AddAnsweringMachineEffects(audioSource);
             
             audioSource.Play();
         }
@@ -531,22 +531,23 @@ public class AIManager : MonoBehaviour
 
     void AddAnsweringMachineEffects(AudioSource audioSource)
     {
-        // 1. Low-pass filter - removes high frequencies for "telephone" quality
-        AudioLowPassFilter lowPass = audioSource.GetComponent<AudioLowPassFilter>();
-        if (lowPass == null) lowPass = audioSource.gameObject.AddComponent<AudioLowPassFilter>();
-        lowPass.cutoffFrequency = 3400f;  // Telephone bandwidth ~300-3400Hz
-        
-        // 2. Distortion - adds compression/tape artifacts  
-        AudioDistortionFilter distortion = audioSource.GetComponent<AudioDistortionFilter>();
-        if (distortion == null) distortion = audioSource.gameObject.AddComponent<AudioDistortionFilter>();
-        distortion.distortionLevel = 0.2f;  // Subtle tape distortion
-        
-        // 3. Reverb - small room echo like old answering machines
-        AudioReverbFilter reverb = audioSource.GetComponent<AudioReverbFilter>();
-        if (reverb == null) reverb = audioSource.gameObject.AddComponent<AudioReverbFilter>();
-        reverb.reverbPreset = AudioReverbPreset.Room;
-        reverb.dryLevel = -1000f;  // Reduce dry signal
-        reverb.reverbLevel = -2000f;  // Subtle reverb
+        // Band-pass 300–3400 Hz (proper telephone bandwidth)
+        AudioHighPassFilter hp = audioSource.GetComponent<AudioHighPassFilter>();
+        if (hp == null) hp = audioSource.gameObject.AddComponent<AudioHighPassFilter>();
+        hp.cutoffFrequency = 300f;
+
+        AudioLowPassFilter lp = audioSource.GetComponent<AudioLowPassFilter>();
+        if (lp == null) lp = audioSource.gameObject.AddComponent<AudioLowPassFilter>();
+        lp.cutoffFrequency = 3400f;
+
+        // 8-bit / 8 kHz bit-crusher for telephone grit
+        TelephoneBitCrusher bc = audioSource.GetComponent<TelephoneBitCrusher>();
+        if (bc == null) bc = audioSource.gameObject.AddComponent<TelephoneBitCrusher>();
+        bc.bitDepth = 8;
+        bc.downSample = 8000;
+
+        // Note: Unity doesn't have built-in AudioCompressorFilter
+        // The bit crusher and band-pass filtering will provide the main telephone effect
     }
     public void ForgetStuff()
     {
@@ -590,4 +591,32 @@ public class AIManager : MonoBehaviour
 
     }
    
+}
+
+/// <summary>Simple bit-crusher for telephone grit.</summary>
+public class TelephoneBitCrusher : MonoBehaviour {
+    public int bitDepth = 8;
+    public int downSample = 8000;
+
+    int phase;
+    float cached;
+    int sampleRate;
+    int step;
+
+    void Start() {
+        // Cache the sample rate on the main thread
+        sampleRate = AudioSettings.outputSampleRate;
+        step = sampleRate / downSample;
+    }
+
+    void OnAudioFilterRead(float[] data, int channels) {
+        // Use cached values instead of calling AudioSettings.outputSampleRate
+        for (int i = 0; i < data.Length; i++) {
+            if ((phase++ % step) == 0) {
+                float levels = (1 << bitDepth) - 1;
+                cached = Mathf.Round(data[i] * levels) / levels;
+            }
+            data[i] = cached;
+        }
+    }
 }
