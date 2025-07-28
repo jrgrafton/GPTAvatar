@@ -41,7 +41,7 @@ public class GameLogic : MonoBehaviour
 #endif
 
 
-     RTConsole.Get().SetShowUnityDebugLogInConsole(true);
+     //RTConsole.Get().SetShowUnityDebugLogInConsole(true);
        
         //RTEventManager.Get().Schedule(RTAudioManager.GetName(), "PlayMusic", 1, "intro");
         string version = "Unity V "+ Application.unityVersion+" :";
