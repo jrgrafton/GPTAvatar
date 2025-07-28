@@ -5,7 +5,7 @@ Library/*
 Logs/*
 build/*
 Unused/*
-Assets/Plugins/*
+Assets/Plugins/Crazy*
 .vs/*
 Assembly-CSharp-Editor.csproj
 Assembly-CSharp-firstpass.csproj
