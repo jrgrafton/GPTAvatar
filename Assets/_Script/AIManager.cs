@@ -354,6 +354,10 @@ public class AIManager : MonoBehaviour
             ElevenLabsTextToSpeechManager ttsScript = gameObject.GetComponent<ElevenLabsTextToSpeechManager>();
             AudioSource audioSource = _audioSourceToUse;
             audioSource.clip = clip;
+            
+            // Add answering machine quality effects
+            //AddAnsweringMachineEffects(audioSource);
+            
             audioSource.Play();
         }
   
@@ -523,6 +527,26 @@ public class AIManager : MonoBehaviour
         audioSource.clip = null;  // Clear cached audio clip to prevent replay
         SetTalking(false);
 
+    }
+
+    void AddAnsweringMachineEffects(AudioSource audioSource)
+    {
+        // 1. Low-pass filter - removes high frequencies for "telephone" quality
+        AudioLowPassFilter lowPass = audioSource.GetComponent<AudioLowPassFilter>();
+        if (lowPass == null) lowPass = audioSource.gameObject.AddComponent<AudioLowPassFilter>();
+        lowPass.cutoffFrequency = 3400f;  // Telephone bandwidth ~300-3400Hz
+        
+        // 2. Distortion - adds compression/tape artifacts  
+        AudioDistortionFilter distortion = audioSource.GetComponent<AudioDistortionFilter>();
+        if (distortion == null) distortion = audioSource.gameObject.AddComponent<AudioDistortionFilter>();
+        distortion.distortionLevel = 0.2f;  // Subtle tape distortion
+        
+        // 3. Reverb - small room echo like old answering machines
+        AudioReverbFilter reverb = audioSource.GetComponent<AudioReverbFilter>();
+        if (reverb == null) reverb = audioSource.gameObject.AddComponent<AudioReverbFilter>();
+        reverb.reverbPreset = AudioReverbPreset.Room;
+        reverb.dryLevel = -1000f;  // Reduce dry signal
+        reverb.reverbLevel = -2000f;  // Subtle reverb
     }
     public void ForgetStuff()
     {
