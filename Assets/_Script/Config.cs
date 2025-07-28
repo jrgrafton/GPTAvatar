@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.Networking;
 
 public class Friend : ScriptableObject
 {
@@ -34,25 +38,25 @@ public class Config : MonoBehaviour
     string _loadedConfigFile = "";
     float m_version = 0.01f;
 
+    // === CROSS-PLATFORM CONFIG LOADING ===
+    private bool configLoadingComplete = false;
+    private string extractedConfigPath = "";
+    // === END CROSS-PLATFORM CONFIG LOADING ===
+
     private void Start()
     {
         RTAudioManager.Get().AddClipsToLibrary(m_audioClips);
 
-        //load config file
-        string filePath = Application.dataPath + "../../config.txt";
+        // === CONFIG FILE DEBUG LOGGING (easily removable) ===
+        Debug.Log($"[CONFIG_DEBUG] === CONFIG DEBUG ===");
+        Debug.Log($"[CONFIG_DEBUG] streamingAssetsPath: {Application.streamingAssetsPath}");
+        Debug.Log($"[CONFIG_DEBUG] dataPath: {Application.dataPath}");
+        Debug.Log($"[CONFIG_DEBUG] persistentDataPath: {Application.persistentDataPath}");
+        Debug.Log($"[CONFIG_DEBUG] Platform: {Application.platform}");
+        // === END CONFIG DEBUG LOGGING ===
 
-        //check if the file exists
-        if (File.Exists(filePath))
-        {
-            LoadConfigFile(filePath);
-        }
-        else
-        {
-            //show error
-            RTQuickMessageManager.Get().ShowMessage("Config file not found at " + filePath);
-        }
-
-        LoadConfigFile(LoadConfigFromFile(filePath));
+        // Start cross-platform config loading
+        StartCoroutine(LoadConfigCrossPlatform());
     }
 
     static public Config Get() { return _this; }
@@ -300,6 +304,76 @@ public class Config : MonoBehaviour
         return _friendList.Count;
     }
 
-    
+    // === CROSS-PLATFORM CONFIG LOADING ===
+    private IEnumerator LoadConfigCrossPlatform()
+    {
+        Debug.Log("[CONFIG_DEBUG] Starting cross-platform config loading...");
 
+        string streamingConfigPath = Application.streamingAssetsPath + "/config.txt";
+        
+        // Check if we need to extract (Android/Quest) or can read directly (Windows/Editor)
+        bool needsExtraction = streamingConfigPath.Contains("://");
+        
+        Debug.Log($"[CONFIG_DEBUG] Needs extraction: {needsExtraction}");
+        Debug.Log($"[CONFIG_DEBUG] StreamingAssets config path: {streamingConfigPath}");
+
+        if (needsExtraction)
+        {
+            // Android/Quest: Extract from APK to writable location
+            extractedConfigPath = Application.persistentDataPath + "/config.txt";
+            Debug.Log($"[CONFIG_DEBUG] Will extract to: {extractedConfigPath}");
+            
+            yield return StartCoroutine(ExtractConfigFile(streamingConfigPath, extractedConfigPath));
+        }
+        else
+        {
+            // Windows/Editor: Use StreamingAssets directly
+            extractedConfigPath = streamingConfigPath;
+            Debug.Log($"[CONFIG_DEBUG] Using direct access: {extractedConfigPath}");
+        }
+
+        // Now load the config from the appropriate location
+        if (File.Exists(extractedConfigPath))
+        {
+            Debug.Log($"[CONFIG_DEBUG] Config file found, loading from: {extractedConfigPath}");
+            string configContents = LoadConfigFromFile(extractedConfigPath);
+            LoadConfigFile(configContents);
+        }
+        else
+        {
+            Debug.LogError($"[CONFIG_DEBUG] Config file not found at: {extractedConfigPath}");
+            RTQuickMessageManager.Get().ShowMessage("Config file not found at " + extractedConfigPath);
+        }
+
+        configLoadingComplete = true;
+        Debug.Log("[CONFIG_DEBUG] Config loading complete!");
+    }
+
+    private IEnumerator ExtractConfigFile(string sourcePath, string destinationPath)
+    {
+        Debug.Log($"[CONFIG_DEBUG] Extracting {sourcePath} to {destinationPath}");
+        
+        using (UnityWebRequest www = UnityWebRequest.Get(sourcePath))
+        {
+            yield return www.SendWebRequest();
+            
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError($"[CONFIG_DEBUG] Failed to load config from StreamingAssets: {www.error}");
+                yield break;
+            }
+            
+            try
+            {
+                byte[] configData = www.downloadHandler.data;
+                File.WriteAllBytes(destinationPath, configData);
+                Debug.Log($"[CONFIG_DEBUG] Successfully extracted config file ({configData.Length} bytes)");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[CONFIG_DEBUG] Failed to write config file: {e.Message}");
+            }
+        }
+    }
+    // === END CROSS-PLATFORM CONFIG LOADING ===
 }

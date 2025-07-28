@@ -23,7 +23,16 @@ tts_json_sent.json
 tts_last_error_returned.json
 GPTAvatar_Windows.zip
 GPTAvatar.sln
-.vsconfig
 soupday.cc3_unity_tools.editor.csproj
 soupday.cc3_unity_tools.runtime.csproj
-config.txt
+**/config.txt
+**/config.txt.meta
+
+# Unity asset package backups and debug folders
+Voicemail-*_BackUpThisFolder_ButDontShipItWithYourGame/
+Voicemail-*_BurstDebugInformation_DoNotShip/
+
+# General Unity backup/debug patterns
+*_BackUpThisFolder_ButDontShipItWithYourGame/
+*_BurstDebugInformation_DoNotShip/
+Voicemail-*.apk
