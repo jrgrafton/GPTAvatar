@@ -8,15 +8,20 @@ public class MicRecorder : MonoBehaviour
     private int recordingStartPosition = 0;
  
     bool isRecording = false;
+    string micDevice;
 
     void Start()
     {
         float startTime = Time.realtimeSinceStartup;
         Debug.Log("[MicRecorder] Initializing continuous microphone buffer - BEGIN");
         
-        // Start continuous 30s circular buffer - accept the 1s freeze HERE at startup
-        audioClip = Microphone.Start(null, true, 15, 48000); // loop=true, 30s buffer, 16kHz optimal for speech
+        // Initialize microphone device after audio system is ready
+        micDevice = Microphone.devices.FirstOrDefault();
+        Debug.Log($"[MicRecorder] Selected microphone device: {micDevice ?? "NULL"}");
         
+        // Start continuous 30s circular buffer - accept the 1s freeze HERE at startup
+        audioClip = Microphone.Start(micDevice, true, 15, 48000); // loop=true, 30s buffer, 16kHz optimal for speech
+        while (Microphone.GetPosition(micDevice) <= 0) {}
         Debug.Log($"[MicRecorder] Continuous microphone initialization took: {(Time.realtimeSinceStartup - startTime) * 1000:F1}ms");
         Debug.Log("[MicRecorder] Microphone now running in continuous mode");
     }
@@ -27,7 +32,7 @@ public class MicRecorder : MonoBehaviour
         Debug.Log("[MicRecorder] Starting recording system - BEGIN");
         
         // Just mark where we are in the continuous buffer - NO FREEZE!
-        recordingStartPosition = Microphone.GetPosition(null);
+        recordingStartPosition = Microphone.GetPosition(micDevice);
         isRecording = true;
         
         Debug.Log($"[MicRecorder] Recording marked at buffer position: {recordingStartPosition}");
@@ -43,9 +48,9 @@ public class MicRecorder : MonoBehaviour
         }
         
         // Optionally stop the continuous microphone on cleanup
-        if (Microphone.IsRecording(null))
+        if (Microphone.IsRecording(micDevice))
         {
-            Microphone.End(null);
+            Microphone.End(micDevice);
             Debug.Log("[MicRecorder] Continuous microphone stopped");
         }
     }
@@ -58,7 +63,7 @@ public class MicRecorder : MonoBehaviour
         float startTime = Time.realtimeSinceStartup;
         Debug.Log("[MicRecorder] Stopping recording and processing - BEGIN");
 
-        int currentPosition = Microphone.GetPosition(null);
+        int currentPosition = Microphone.GetPosition(micDevice);
         isRecording = false;
 
         // Calculate recorded length, handling wraparound
