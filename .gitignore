@@ -5,13 +5,16 @@ Library/*
 Logs/*
 build/*
 Unused/*
-Assets/Plugins/*
+Assets/Plugins/Crazy*
 .vs/*
 Assembly-CSharp-Editor.csproj
 Assembly-CSharp-firstpass.csproj
 Assembly-CSharp.csproj
 UserSettings/*
 Assembly-CSharp-Editor-firstpass.csproj
+
+# Ignore all .csproj files (Unity auto-generated)
+*.csproj
 elevenlabs_tts_json_received.mp3
 elevenlabs_tts_json_sent.json
 last_error_returned.json

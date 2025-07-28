@@ -6626,7 +6626,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   emoterName: Emoter
   queueProcessor: {fileID: 1020498028}
-  lipsyncEmphasisChance: 1
+  lipsyncEmphasisChance: 0.468
   lipsyncEmphasisEmotes: []
   repeaterEmotes: []
   randomEmotes: []
@@ -9238,7 +9238,7 @@ MonoBehaviour:
   randomHoldDurationMax: 0.5
   configReady: 1
   warnOnNullRefs: 1
-  inspSalsaLinked: 0
+  inspSalsaLinked: 1
   inspStateFoldoutProcessing: 0
   inspStateFoldoutSettings: 0
   inspStateFoldoutEmotes: 0
@@ -9360,7 +9360,7 @@ MonoBehaviour:
   emphasizerTrigger: 0
   analysisValue: 0
   sampleSize: 512
-  audioUpdateDelay: 0.095
+  audioUpdateDelay: 0.098375
   playheadBias: 2800
   autoAdjustAnalysis: 1
   autoAdjustMicrophone: 0
@@ -9382,7 +9382,7 @@ MonoBehaviour:
   usePersistence: 0
   useTimingsOverride: 1
   globalDurON: 0.125
-  globalDurOFF: 0.06
+  globalDurOFF: 0.1025
   globalDurOffBalance: -0.18
   originalUpdateDelay: 0
   globalNuanceBalance: -0.213
@@ -12601,7 +12601,7 @@ MonoBehaviour:
   isDebug: 0
   useAudioAnalysis: 1
   needAudioSource: 1
-  inspStateFoldoutProcessing: 0
+  inspStateFoldoutProcessing: 1
   inspStateFoldoutSettings: 0
   inspStateFoldoutVisemes: 0
   inspCollectionDisplayMode: 0
