@@ -57,10 +57,8 @@ public class AIManager : MonoBehaviour
             return;
         }
 
-        _dialogText.text = "Click Start for the character to introduce themselves.";
+        _dialogText.text = "Press record, start talking, then press stop.";
         _statusText.text = "";
-
-        ForgetStuff();
 
          List<GameObject> objs = new List<GameObject> ();
         RTUtil.AddObjectsToListByNameIncludingInactive(_visuals, "char_visual", true, objs);
@@ -91,6 +89,9 @@ public class AIManager : MonoBehaviour
         _animator = activeVisual.GetComponentInChildren<Animator>();
 #endif
         SetListening(false);
+        
+        // Clear chat history and stop any cached audio AFTER AudioSource is properly assigned
+        ForgetStuff();
        
     }
 
@@ -301,7 +302,7 @@ public class AIManager : MonoBehaviour
             json = ttsScript.BuildTTSJSON(text, _activeFriend._elevenlabsStability);
             ttsScript.SpawnTTSRequest(json, OnTTSCompletedCallbackElevenLabs, db, _elevenLabsAPIkey, _activeFriend._elevelLabsVoice);
 
-            UpdateStatusText("Clearing throat...", 20);
+            UpdateStatusText("Composing Voicemail...", 20);
 
         }
         else if (_activeFriend._googleVoice.Length > 1 && _googleAPIkey.Length > 1)
@@ -311,7 +312,7 @@ public class AIManager : MonoBehaviour
             GoogleTextToSpeechManager ttsScript = gameObject.GetComponent<GoogleTextToSpeechManager>();
             json = ttsScript.BuildTTSJSON(text, countryCode, _activeFriend._googleVoice, sampleRate, _activeFriend._pitch, _activeFriend._speed);
             ttsScript.SpawnTTSRequest(json, OnTTSCompletedCallback, db, _googleAPIkey);
-            UpdateStatusText("Clearing throat...", 20);
+            UpdateStatusText("Composing Voicemail...", 20);
         } else
         {
             //No text to speech setup for this voice
@@ -353,6 +354,10 @@ public class AIManager : MonoBehaviour
             ElevenLabsTextToSpeechManager ttsScript = gameObject.GetComponent<ElevenLabsTextToSpeechManager>();
             AudioSource audioSource = _audioSourceToUse;
             audioSource.clip = clip;
+            
+            // Add answering machine quality effects
+            AddAnsweringMachineEffects(audioSource);
+            
             audioSource.Play();
         }
   
@@ -415,20 +420,45 @@ public class AIManager : MonoBehaviour
     {
         if (!_microPhoneScript.IsRecording())
         {
+            float startTime = Time.realtimeSinceStartup;
+            Debug.Log("[PERF] ToggleRecording START - Starting recording operations");
+            
             StopTalking();
+            Debug.Log($"[PERF] StopTalking took: {(Time.realtimeSinceStartup - startTime) * 1000:F1}ms");
+            
+            float stepTime = Time.realtimeSinceStartup;
             Debug.Log("Recording started");
             //make the button background turn red
             _recordButton.GetComponent<Image>().color = Color.red;
+            Debug.Log($"[PERF] GetComponent<Image>().color took: {(Time.realtimeSinceStartup - stepTime) * 1000:F1}ms");
+            
+            stepTime = Time.realtimeSinceStartup;
             _microPhoneScript.StartRecording();
-            PlayClickSound();
-            SetListening(true);
+            Debug.Log($"[PERF] StartRecording took: {(Time.realtimeSinceStartup - stepTime) * 1000:F1}ms");
+            
+            stepTime = Time.realtimeSinceStartup;
+            //PlayClickSound();
+            RTMessageManager.Get().Schedule(0, RTAudioManager.Get().PlayEx, 
+"record_start_short", 0.3f, 1.0f, false, 0.0f);
 
+            Debug.Log($"[PERF] PlayClickSound took: {(Time.realtimeSinceStartup - stepTime) * 1000:F1}ms");
+            
+            stepTime = Time.realtimeSinceStartup;
+            SetListening(true);
+            Debug.Log($"[PERF] SetListening took: {(Time.realtimeSinceStartup - stepTime) * 1000:F1}ms");
+            
+            Debug.Log($"[PERF] ToggleRecording TOTAL took: {(Time.realtimeSinceStartup - startTime) * 1000:F1}ms");
         }
         else
         {
             //Turn the button background color back
             _recordButton.GetComponent<Image>().color = Color.white;
-            PlayClickSound();
+            //PlayClickSound();
+
+            // Uses RTMessageManager for scheduled playback
+            RTMessageManager.Get().Schedule(0, RTAudioManager.Get().PlayEx, 
+"record_stop", 0.1f, 1.0f, false, 0.0f);
+
             //let's set the filename to a temporary space that will work on iOS
             string outputFileName = Application.temporaryCachePath + "/temp.wav";
             _microPhoneScript.StopRecordingAndProcess(outputFileName);
@@ -461,7 +491,7 @@ public class AIManager : MonoBehaviour
     {
         ForgetStuff();
         //build a stack of GTPChatLine so we can add as many as we want
-        PlayClickSound();
+        //PlayClickSound();
 
         OpenAITextCompletionManager textCompletionScript = gameObject.GetComponent<OpenAITextCompletionManager>();
         Queue<GTPChatLine> lines = new Queue<GTPChatLine>();
@@ -494,8 +524,30 @@ public class AIManager : MonoBehaviour
     {
         AudioSource audioSource = _audioSourceToUse;
         audioSource.Stop();
+        audioSource.clip = null;  // Clear cached audio clip to prevent replay
         SetTalking(false);
 
+    }
+
+    void AddAnsweringMachineEffects(AudioSource audioSource)
+    {
+        // Band-pass 300–3400 Hz (proper telephone bandwidth)
+        AudioHighPassFilter hp = audioSource.GetComponent<AudioHighPassFilter>();
+        if (hp == null) hp = audioSource.gameObject.AddComponent<AudioHighPassFilter>();
+        hp.cutoffFrequency = 300f;
+
+        AudioLowPassFilter lp = audioSource.GetComponent<AudioLowPassFilter>();
+        if (lp == null) lp = audioSource.gameObject.AddComponent<AudioLowPassFilter>();
+        lp.cutoffFrequency = 3400f;
+
+        // 8-bit / 8 kHz bit-crusher for telephone grit
+        TelephoneBitCrusher bc = audioSource.GetComponent<TelephoneBitCrusher>();
+        if (bc == null) bc = audioSource.gameObject.AddComponent<TelephoneBitCrusher>();
+        bc.bitDepth = 8;
+        bc.downSample = 8000;
+
+        // Note: Unity doesn't have built-in AudioCompressorFilter
+        // The bit crusher and band-pass filtering will provide the main telephone effect
     }
     public void ForgetStuff()
     {
@@ -539,4 +591,32 @@ public class AIManager : MonoBehaviour
 
     }
    
+}
+
+/// <summary>Simple bit-crusher for telephone grit.</summary>
+public class TelephoneBitCrusher : MonoBehaviour {
+    public int bitDepth = 8;
+    public int downSample = 8000;
+
+    int phase;
+    float cached;
+    int sampleRate;
+    int step;
+
+    void Start() {
+        // Cache the sample rate on the main thread
+        sampleRate = AudioSettings.outputSampleRate;
+        step = sampleRate / downSample;
+    }
+
+    void OnAudioFilterRead(float[] data, int channels) {
+        // Use cached values instead of calling AudioSettings.outputSampleRate
+        for (int i = 0; i < data.Length; i++) {
+            if ((phase++ % step) == 0) {
+                float levels = (1 << bitDepth) - 1;
+                cached = Mathf.Round(data[i] * levels) / levels;
+            }
+            data[i] = cached;
+        }
+    }
 }
